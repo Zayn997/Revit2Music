@@ -1,0 +1,16 @@
+key: C_major
+tempo: 120
+time_signature:
+  - 4
+  - 4
+scale_type: major
+note_range:
+  - 36
+  - 84
+composition_strategy: spatial_sequencing
+duration_per_element: 0.5
+overlap_allowed: true
+export_midi: true
+export_audio: false
+audio_format: mp3
+sample_rate: 44100
