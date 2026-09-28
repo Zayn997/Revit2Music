@@ -8,24 +8,19 @@ import {
   Alert,
   RefreshControl,
 } from "react-native";
-import { useFocusEffect } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import FileService from "../services/FileService";
 import { MusicTrack } from "../types";
 
-interface LibraryScreenProps {
-  navigation: any;
-}
-
-export default function LibraryScreen({ navigation }: LibraryScreenProps) {
+export default function LibraryScreen({ navigation }: { navigation?: any }) {
+  const nav = navigation || useNavigation<any>();
   const [tracks, setTracks] = useState<MusicTrack[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
-  useFocusEffect(
-    useCallback(() => {
-      loadTracks();
-    }, [])
-  );
+  useEffect(() => {
+    loadTracks();
+  }, []);
 
   const loadTracks = async () => {
     setLoading(true);
@@ -60,7 +55,7 @@ export default function LibraryScreen({ navigation }: LibraryScreenProps) {
   };
 
   const handlePlayTrack = (track: MusicTrack) => {
-    navigation.navigate("Player", { track });
+    nav.navigate("Player", { track });
   };
 
   const handleDeleteTrack = (track: MusicTrack) => {
@@ -129,6 +124,9 @@ export default function LibraryScreen({ navigation }: LibraryScreenProps) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
+        <TouchableOpacity onPress={() => nav.navigate("Intro")}>
+          <Text style={styles.backText}>← Back</Text>
+        </TouchableOpacity>
         <Text style={styles.headerTitle}>My Music Library</Text>
         <TouchableOpacity style={styles.importButton} onPress={handleImport}>
           <Text style={styles.importButtonText}>+ Import</Text>
@@ -170,6 +168,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#333",
   },
+  backText: { color: "#fff", fontSize: 14 },
   headerTitle: {
     fontSize: 24,
     fontWeight: "bold",

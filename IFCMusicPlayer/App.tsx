@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
-import { StatusBar } from "expo-status-bar";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import { View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import AppNavigator from "./src/navigation/AppNavigator";
+import BasicNavigator from "./src/navigation/BasicNavigator";
 import AudioService from "./src/services/AudioService";
 import FileService from "./src/services/FileService";
 
@@ -17,11 +16,8 @@ export default function App() {
   };
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <SafeAreaProvider>
-        <StatusBar style="light" />
-        <AppNavigator />
-      </SafeAreaProvider>
+    <GestureHandlerRootView style={{ flex: 1, backgroundColor: "#121212" }}>
+      <BasicNavigator />
     </GestureHandlerRootView>
   );
 }

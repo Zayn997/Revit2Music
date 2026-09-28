@@ -7,7 +7,7 @@ import {
   ScrollView,
   Dimensions,
 } from "react-native";
-import { useFocusEffect } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import AudioService from "../services/AudioService";
 import FileService from "../services/FileService";
 import { MusicTrack, BuildingMetadata } from "../types";
@@ -20,23 +20,20 @@ interface PlayerScreenProps {
 }
 
 export default function PlayerScreen({ route, navigation }: PlayerScreenProps) {
+  const nav = navigation || useNavigation<any>();
   const [track, setTrack] = useState<MusicTrack | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [position, setPosition] = useState(0);
   const [duration, setDuration] = useState(0);
   const [metadata, setMetadata] = useState<BuildingMetadata | null>(null);
 
-  useFocusEffect(
-    useCallback(() => {
-      if (route.params?.track) {
-        loadTrack(route.params.track);
-      }
-
-      const interval = setInterval(updatePlaybackStatus, 500);
-
-      return () => clearInterval(interval);
-    }, [route.params?.track])
-  );
+  useEffect(() => {
+    if (route?.params?.track) {
+      loadTrack(route.params.track);
+    }
+    const interval = setInterval(updatePlaybackStatus, 500);
+    return () => clearInterval(interval);
+  }, [route?.params?.track]);
 
   const loadTrack = async (newTrack: MusicTrack) => {
     const success = await AudioService.loadTrack(newTrack);
